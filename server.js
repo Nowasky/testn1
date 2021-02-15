@@ -10,7 +10,7 @@ const port = process.env.PORT || 3000;
 
 const WebSocket = require('ws')
 
-var clients = [];
+var client = '';
 
 //const wss = new WebSocket.Server({ port: 8080 })
 //const wss = new WebSocket.Server({ server })
@@ -25,7 +25,7 @@ app.get("/", (req,res) => {
 
 app.post("/report", (req,res) => {
   console.log(req.body)
-  //clients[0].send('CSP report: ' + req.body);
+  //client.send('CSP report: ' + req.body);
   return res.send('CSP violation report received');
 });
 
@@ -41,9 +41,9 @@ const wss = new WebSocket.Server({ server });
 //const wss = new WebSocket.Server({ port: 8080 })
 //const wss = new WebSocket.Server({ server })
 wss.on('connection', ws => {
-  clients.push(ws);
+  clients = ws;
   //ws.on('message', message => {
   //  console.log(`Received message => ${message}`)
   //})
-  clients[0].send('Hello! Message From Server!!');
+  client.send('Hello! Message From Server!!');
 })
