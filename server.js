@@ -41,7 +41,7 @@ const wss = new WebSocket.Server({ server });
 //const wss = new WebSocket.Server({ port: 8080 })
 //const wss = new WebSocket.Server({ server })
 wss.on('connection', ws => {
-  clients = ws;
+  client = ws;
   //ws.on('message', message => {
   //  console.log(`Received message => ${message}`)
   //})
