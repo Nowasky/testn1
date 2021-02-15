@@ -2,7 +2,8 @@
 let socket = new WebSocket(location.origin.replace(/^http/, 'ws'));
   
 socket.onmessage = function(event) {
-  alert(`Data received from server: ${event.data}`);
+  socket.send('Message received');
+  alert(`${event.data}`);
 };
 </script>
 
