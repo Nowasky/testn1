@@ -30,9 +30,18 @@ app.use(bodyParser.json({ type: 'application/csp-report' }));
 app.post("/report", (req,res) => {
   blockedUri = req.body['csp-report']['blocked-uri'];
 
-  console.log('blocked-uri: ' + blockedUri)
-  global.client.send('blocked-uri: ' + blockedUri);
-  //global.client.close();
+  console.log('blocked-uri: ' + blockedUri);
+  if (blockedUri.includes('mysecret')) {
+     message = 'CSP violation report leaked the full redirect path.';
+  }else if (blockedUri.includes('example.com')){
+     message = 'CSP violation report leaked the redirect domain.';
+  }else if (blockedUri.includes('bit.ly')){
+     message = 'CSP violation report did not leak any redirect data.';
+  }else{
+     message = 'Unexpected data in the CSP violation report.'
+  }
+
+  global.client.send(message + '\r\n\r\nblocked-uri: ' + blockedUri);
   return res.send('CSP violation report received');
 });
 
@@ -53,10 +62,11 @@ wss.on('connection', ws => {
   global.client = ws;
   ws.on('message', message => {
   //  console.log(`Received message => ${message}`)
-    //if (message == 'Message received'){
+    if (message == 'Message received'){
       console.log('message received!');
       ws.close();
-    //}
+    }
+    
   })
   //ws.send('Hello!');
 })
