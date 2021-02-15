@@ -10,7 +10,7 @@ const port = process.env.PORT || 3000;
 
 const WebSocket = require('ws')
 
-var global.client;
+global.client;
 
 //const wss = new WebSocket.Server({ port: 8080 })
 //const wss = new WebSocket.Server({ server })
