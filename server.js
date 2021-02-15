@@ -11,7 +11,7 @@ const port = process.env.PORT || 3000;
 const WebSocket = require('ws')
 
 //const wss = new WebSocket.Server({ port: 8080 })
-const wss = new WebSocket.Server({ server })
+//const wss = new WebSocket.Server({ server })
 
 // Body parser
 app.use(express.urlencoded({ extended: false }));
@@ -32,7 +32,7 @@ var server = app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
 });
 
-//const wss = new WebSocket.Server({ server });
+const wss = new WebSocket.Server({ server });
 
 //const WebSocket = require('ws')
  
