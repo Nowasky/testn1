@@ -25,7 +25,7 @@ app.get("/", (req,res) => {
 
 app.post("/report", (req,res) => {
   console.log(req.body)
-  clients[0].send('CSP report: ' + req.body);
+  //clients[0].send('CSP report: ' + req.body);
   return res.send('CSP violation report received');
 });
 
