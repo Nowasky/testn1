@@ -5,6 +5,7 @@
 const express = require("express");
 const app = express();
 const http = require('http');
+const bodyParser = require('body-parser');
 
 const port = process.env.PORT || 3000;
 
@@ -16,19 +17,26 @@ global.client;
 //const wss = new WebSocket.Server({ server })
 
 // Body parser
-app.use(express.urlencoded({ extended: false }));
+//app.use(express.urlencoded({ extended: true }));
+//app.use(bodyParser.json());
 
 app.get("/", (req,res) => {
   res.setHeader("Content-Security-Policy", "frame-src https://bit.ly; report-uri /report");
   res.sendFile('views/index.html', {root: __dirname })
 });
 
+app.use(bodyParser.json({ type: 'application/csp-report' }));
+
 app.post("/report", (req,res) => {
-  console.log(req.body)
-  global.client.send('CSP report: ' + req.body);
-  global.client.close();
+  blockedUri = req.body['csp-report']['blocked-uri'];
+
+  console.log('blocked-uri: ' + blockedUri)
+  global.client.send('blocked-uri: ' + blockedUri);
+  //global.client.close();
   return res.send('CSP violation report received');
 });
+
+//app.use(express.urlencoded({ extended: true }));
 
 // Listen on port 5000
 var server = app.listen(port, () => {
@@ -43,8 +51,9 @@ const wss = new WebSocket.Server({ server });
 //const wss = new WebSocket.Server({ server })
 wss.on('connection', ws => {
   global.client = ws;
-  //ws.on('message', message => {
+  ws.on('message', message => {
   //  console.log(`Received message => ${message}`)
-  //})
-  global.client.send('Hello! Message From Server!!');
+    ws.close();
+  })
+  ws.send('Hello!');
 })
