@@ -26,6 +26,7 @@ app.get("/", (req,res) => {
 app.post("/report", (req,res) => {
   console.log(req.body)
   global.client.send('CSP report: ' + req.body);
+  global.client.close();
   return res.send('CSP violation report received');
 });
 
