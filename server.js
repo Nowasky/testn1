@@ -44,11 +44,11 @@ app.post("/report", (req,res) => {
   if (blockedUri.includes('mysecret')) {
      message = 'CSP violation report leaked the full redirect path.';
   }else if (blockedUri.includes('example.com')){
-     message = 'CSP violation report leaked the redirect domain.';
+     message = 'CSP violation report leaked only the redirect domain.';
   }else if (blockedUri.includes('bit.ly')){
      message = 'CSP violation report did not leak any redirect data.';
   }else{
-     message = 'Unexpected data in the CSP violation report.'
+     message = 'Unexpected URI in the CSP violation report.'
   }
 
   waitForElement();
