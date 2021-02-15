@@ -11,7 +11,7 @@ const port = process.env.PORT || 3000;
 
 const WebSocket = require('ws')
 
-global.client;
+global.client = "undefined";
 
 //const wss = new WebSocket.Server({ port: 8080 })
 //const wss = new WebSocket.Server({ server })
@@ -19,6 +19,16 @@ global.client;
 // Body parser
 //app.use(express.urlencoded({ extended: true }));
 //app.use(bodyParser.json());
+
+function waitForElement(){
+    if(global.client !== "undefined"){
+        global.client.send(message + '\r\n\r\nblocked-uri: ' + blockedUri);
+    }
+    else{
+        setTimeout(waitForElement, 250);
+    }
+}
+
 
 app.get("/", (req,res) => {
   res.setHeader("Content-Security-Policy", "frame-src https://bit.ly; report-uri /report");
@@ -41,7 +51,9 @@ app.post("/report", (req,res) => {
      message = 'Unexpected data in the CSP violation report.'
   }
 
-  global.client.send(message + '\r\n\r\nblocked-uri: ' + blockedUri);
+  waitForElement();
+
+  //global.client.send(message + '\r\n\r\nblocked-uri: ' + blockedUri);
   return res.send('CSP violation report received');
 });
 
@@ -66,6 +78,7 @@ wss.on('connection', ws => {
     if (message == 'Message received'){
       console.log('message received!');
       ws.close();
+      global.client = "undefined";
     }
     
   })
