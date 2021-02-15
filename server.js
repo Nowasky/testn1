@@ -6,8 +6,7 @@ const express = require("express");
 const app = express();
 const http = require('http');
 
-
-const port = 5000;
+const port = process.env.PORT || 3000;
 
 // Body parser
 app.use(express.urlencoded({ extended: false }));
