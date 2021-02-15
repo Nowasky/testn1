@@ -2,7 +2,9 @@
 let socket = new WebSocket(location.origin.replace(/^http/, 'ws'));
   
 socket.onmessage = function(event) {
-  socket.send('Message received');
+  if (!event.data.includes('Unexpected'){
+      socket.send('Message received');
+  }
   alert(`${event.data}`);
 };
 </script>
