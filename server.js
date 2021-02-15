@@ -53,7 +53,10 @@ wss.on('connection', ws => {
   global.client = ws;
   ws.on('message', message => {
   //  console.log(`Received message => ${message}`)
-    ws.close();
+    //if (message == 'Message received'){
+      console.log('message received!');
+      ws.close();
+    //}
   })
-  ws.send('Hello!');
+  //ws.send('Hello!');
 })
